@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <cstdio>
 
 using namespace std;
 
@@ -111,9 +112,9 @@ int main()
 		int n, m;
 		cin >> n >> m;
 		int al[n];
-		int type, l, r;
+		int type, l, r, ans;
 		for(int i = 0; i != n; ++i){
-			cin >> al[i];
+			scanf("%d", &al[i]);
 		}
 		//	Initialize interval tree
 		Node T = new Tree;
@@ -122,7 +123,7 @@ int main()
 		//printtree(T);
 
 		for(int i = 0; i != m; ++i){
-			cin >> type >> l >> r;
+			scanf("%d%d%d", &type, &l, &r);
 			--l;
 			--r;
 			if(type == 0){
@@ -131,7 +132,8 @@ int main()
 				//printtree(T);
 			}
 			else{
-				cout << get(T, l, r) << endl;
+				ans = get(T, l, r);
+				printf("%d\n", ans);
 			}
 		}
 	}
