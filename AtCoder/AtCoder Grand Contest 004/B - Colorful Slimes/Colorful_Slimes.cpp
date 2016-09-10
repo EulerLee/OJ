@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 using namespace std;
 
@@ -13,26 +14,29 @@ int main()
 	int n, X;
 	cin >> n >> X;
 	int al[N];
-	vector<int> pl;
+	long long min = INF;
+	int pos;
 	for(int i = 0; i != n; ++i){
 		cin >> al[i];
-		if(al[i] < X){
-			pl.push_back(i);
-		}
 	}
 	long long ans = 0;
-	int pos, len;
-	for(int k = 0; k != pl.size(); ++k){
-		ans += al[pl[k]];
-		pos = pl[k];
-		len = (pl[(k + 1) % pl.size()] - pl[k] + n - 1) % n;
-		for(int i = 1; i != len + 1; ++i){
-			if(al[(pos + i) % n] < al[pos] + X){
-				ans += al[(pos + i) % n];
-			}
-			else{
-				ans += (al[pos] + X);
-			}
+	long minc[N][2];
+	for(int i = 0; i != n; ++i){
+		minc[i][0] = al[i];
+		ans += minc[i][0];
+	}
+	for(int k = 1; k != n; ++k){
+		long long tmp = 0;
+		for(int i = 0; i != n; ++i){
+			minc[i][1] = MIN(minc[i][0], al[(i - k + n) % n]);
+			tmp += minc[i][1];
+		}
+		tmp += k * X;
+		if(tmp < ans){
+			ans = tmp;
+		}
+		for(int i = 0; i != n; ++i){
+			minc[i][0] = minc[i][1];
 		}
 	}
 	cout << ans << endl;
