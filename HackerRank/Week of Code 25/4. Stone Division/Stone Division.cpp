@@ -7,9 +7,15 @@
 using namespace std;
 vector<long long> S;
 
+map<long long, long long> res;
+
 long long grundy(long long n)
 {
+    if(res.find(n) != res.end()) {
+        return res[n];
+    }
     if(n == 0 || n == 1) {
+        res[n] = 0;
         return 0;
     }
     /*vector<long long> factors;
@@ -53,6 +59,7 @@ long long grundy(long long n)
     long long ans = 0;
     while(true) {
         if(mp.find(ans) == mp.end()) {
+            res[n] = ans;
             return ans;
         }
         ++ans;
