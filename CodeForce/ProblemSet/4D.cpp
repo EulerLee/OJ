@@ -1,6 +1,3 @@
-/*
-单向图的最长边
-*/
 #include <iostream>
 #include <map>
 #include <string>
@@ -11,7 +8,6 @@
 #define RANGE(i, x, n) for(int i = x; i < n; ++i)
 using namespace std;
 
-//vector<vector<int> > g;
 bool g[5000][5000];
 int len[5000];
 int nextp[5000];
