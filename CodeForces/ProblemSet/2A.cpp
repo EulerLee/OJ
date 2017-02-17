@@ -42,7 +42,7 @@ int main()
         finals.clear();
         for(int i = 0; ; ++i) {
             finals[names[i]] += scores[i];
-            if(finals[names[i]] >= max && winners.find(names[i]) != winners.end()) {
+            if(finals[names[i]] >= max && winners.find(names[i]) != winners.end()) {    // this is all
                 cout << names[i] << endl;
                 break;
             }

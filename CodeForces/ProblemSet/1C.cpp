@@ -34,7 +34,7 @@ long double GCD3(long double a, long double b, long double c, map<int, long doub
 
 int main()
 {
-    map<int, long double> pa;
+    map<int, long double> pa;   // important
     for(int i = 3; i <= 100; ++i) {
         pa[i] = 360.0 / i;
     }
@@ -49,18 +49,13 @@ int main()
     C = acos(((x2 - x3)*(x1 - x3) + (y2 - y3)*(y1 - y3)) / (a*b));
 
     cout.precision(20);
-    //cout << A << endl;
     long double A1, B1, C1;
     A1 = A / M_PI * 180;
     B1 = B / M_PI * 180;
     C1 = C / M_PI * 180;
-    //cout << A1 << endl << B1 << endl << C1 << endl;
     long double D1 = GCD3(2 * A1, 2 * B1, 2 * C1, pa);
-    //cout << D1 << endl;
     long double D = M_PI * D1 / 180;
-    //cout << D << endl;
     int k = ff(360 / D1);
-    //cout << k << endl;
     long double ans;
     long double r = a*b*c / sqrt((a+b+c) * (b+c-a) * (a-b+c) * (a+b-c));
     ans = sin(D) * r * r / 2 * k;

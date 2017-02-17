@@ -139,6 +139,7 @@ int main()
 
     REP(i, n)
         REP(j, n) {
+            // double scan
             getres5(i, j, n);
             getres2(i, j, n);
         }

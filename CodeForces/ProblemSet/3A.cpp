@@ -20,7 +20,7 @@ int distance(pos p, pos a)
     if(p.x < 0 || p.x > 7 || p.y < 0 || p.y > 7) {
         return MAX;
     }else {
-        return abs(p.x - a.x) + abs(p.y - a.y) - min(abs(p.x - a.x), abs(p.y - a.y));
+        return abs(p.x - a.x) + abs(p.y - a.y) - min(abs(p.x - a.x), abs(p.y - a.y)); // this is all
     }
 }
 
