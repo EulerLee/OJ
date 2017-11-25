@@ -34,28 +34,8 @@ int main()
                 ans += tmp;
             }
             ans += tmp;
-            //cout << i << " " << j << " " << tmp << endl;
         }
     }
-
-    /*RANGE(a, 1, N+1) {
-        RANGE(k, 1, 9) {
-            LL low = 0;
-            LL high = 1e6+1;
-            LL mid = (low + high) / 2;
-            while(high - low > 1) {
-                if(a*(9*mid + k) <= N) {
-                    low = mid;
-                }else {
-                    high = mid;
-                }
-                mid = (low + high) / 2;
-            }
-            if(a*k <= N) {
-                ans -= mid+1;
-            }
-        }
-    }*/
 
     RANGE(a, 1, N+1) {
         LL low = 0;
