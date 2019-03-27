@@ -116,9 +116,9 @@ int main()
     REP(i, n-1) {
         T[i+1] += T[i];
     }
-    /*cout << endl;
+    cout << endl;
     REP(i, n) cout << T[i] << " "; cout << endl;
-    REP(i, n) cout << A[i] << " "; cout << endl;*/
+    REP(i, n) cout << A[i] << " "; cout << endl;
     init(n);
     REP(i, n) {
         update(i, A[i]);
