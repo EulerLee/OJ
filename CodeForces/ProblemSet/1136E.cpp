@@ -6,9 +6,9 @@
 #define RANGE(i, x, n) for(ll i = x; i < n; ++i)
 using namespace std;
 typedef long long ll;
-const ll INF = 0x9f9f9f9f9f9f9f9f;
+const ll INF = 0x3f3f3f3f3f3f3f3f;
 
-const int MAXN = 1<<18;
+const ll MAXN = 1<<18;
 ll N, dat[2*MAXN - 1], maxb[2*MAXN - 1], sum[2*MAXN - 1];
 
 template <typename T>
@@ -18,20 +18,20 @@ T input() {
     return res;
 }
 
-void init(int n_)
+void init(ll n_)
 {
     N = 1;
     while(N < n_) {
         N *= 2;
     }
-    for(int i = 0; i < 2*N-1; ++i) {
+    for(ll i = 0; i < 2*N-1; ++i) {
         dat[i] = INF;
         maxb[i] = 0;
         sum[i] = 0;
     }
 }
 
-void update(int k, int a)
+void update(ll k, ll a)
 {
     k += N-1;
     dat[k] = a;
@@ -44,7 +44,7 @@ void update(int k, int a)
     }
 }
 
-void set_update(int a, int b, ll v, ll l, ll r, ll k)
+void set_update(ll a, ll b, ll v, ll l, ll r, ll k)
 {
     if(r <= a || b <= l) return;
     if(a <= l && r <= b) {
@@ -56,7 +56,7 @@ void set_update(int a, int b, ll v, ll l, ll r, ll k)
     if(dat[k] != INF) {
         dat[k*2+1] = dat[k*2+2] = dat[k];
         maxb[k*2+1] = maxb[k*2+2] = dat[k];
-        sum[k*2+1] = sum[k*2+2] = sum[k]/2;
+        sum[k*2+1] = sum[k*2+2] = sum[k]>>1;
         dat[k] = INF;
     }
     set_update(a, b, v, l, (l+r)>>1, k*2+1);
@@ -65,20 +65,20 @@ void set_update(int a, int b, ll v, ll l, ll r, ll k)
     sum[k] = sum[k*2+1] + sum[k*2+2];
 }
 
-ll getsum(int a, int b, int k, int l, int r)
+ll getsum(ll a, ll b, ll k, ll l, ll r)
 {
     if(r <= a || b <= l) return 0;
     if(a <= l && r <= b) return sum[k];
     if(dat[k] != INF) {
         dat[k*2+1] = dat[k*2+2] = dat[k];
         maxb[k*2+1] = maxb[k*2+2] = dat[k];
-        sum[k*2+1] = sum[k*2+2] = sum[k]/2;
+        sum[k*2+1] = sum[k*2+2] = sum[k]>>1;
         dat[k] = INF;
     }
     return getsum(a, b, k*2+1, l, (l+r)>>1) + getsum(a, b, k*2+2, (l+r)>>1, r);
 }
 
-int findind(int a, int b, int v, int l, int r, int k)
+ll findind(ll a, ll b, ll v, ll l, ll r, ll k)
 {
     if(b <= a) return -1;
     if(r <= a || b <= l) return -1;
@@ -92,7 +92,7 @@ int findind(int a, int b, int v, int l, int r, int k)
         sum[k*2+1] = sum[k*2+2] = sum[k]/2;
         dat[k] = INF;
     }
-    int pl = -1, pr = -1;
+    ll pl = -1, pr = -1;
     if(maxb[k*2+1] >= v){
         pl = findind(a, b, v, l, (l+r)>>1, k*2+1);
     }
@@ -107,7 +107,7 @@ int main()
     cin.tie(0);
     cout.tie(0);
 
-    int n, q;
+    ll n, q;
     cin >> n;
     vector<ll> A(n, 0);
     vector<ll> T(n, 0);
@@ -135,12 +135,12 @@ int main()
     cin >> q;
     while(q--) {
         if(input<string>() == "+") {
-            int k = input<int>();
-            int x = input<ll>();
+            ll k = input<ll>();
+            ll x = input<ll>();
             --k;
             ll bk = getsum(k, k+1, 0, 0, N);
             bk += x;
-            int pos = findind(k+1, n, bk, 0, N, 0);
+            ll pos = findind(k+1, n, bk, 0, N, 0);
             //cout << k << " " << pos << " " << bk << endl;
             if(pos == -1) {
                 set_update(k, n, bk, 0, N, 0);
@@ -148,8 +148,8 @@ int main()
                 set_update(k, pos, bk, 0, N, 0);
             }
         }else {
-            int l = input<int>();
-            int r = input<int>();
+            ll l = input<ll>();
+            ll r = input<ll>();
             --l, --r;
             ll ans = getsum(l, r+1, 0, 0, N) + (l==0 ? T[r]:T[r] - T[l-1]);
             cout << ans << endl;
