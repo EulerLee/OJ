@@ -105,27 +105,26 @@ void set_mul(ll a, ll b, ll x, ll m, ll l, ll r, ll k)
 {
     if(r <= a || b <= l) return;
     if(a <= l && r <= b) {
-        mul[k] = mul[k]*quickpow(x, r-l)%mod;
+        mul[k] = mul[k]*x%mod;
         maskm[k] |= m;
         return;
     }
+    dat[k] *= quickpow(x, min(b, r)-max(a, l));
+    dat[k] %= mod;
+    mask[k] |= m;
     set_mul(a, b, x, m, l, (l+r)>>1, k*2+1);
     set_mul(a, b, x, m, (l+r)>>1, r, k*2+2);
-    dat[k] = dat[k*2+1]*dat[k*2+2]%mod;
-    dat[k] = dat[k]*mul[k*2+1]%mod*mul[k*2+2]%mod;
-    mask[k] = mask[k*2+1]|mask[k*2+2];
-    mask[k] |= maskm[k*2+1]|maskm[k*2+2];
 }
 
 ll getproduct(ll a, ll b, ll l, ll r, ll k)
 {
     if(r <= a || b <= l) return 1;
     if(a <= l && r <= b) {
-        return dat[k]*mul[k]%mod;
+        return dat[k]*quickpow(mul[k], r-l)%mod;
     }
     ll vl = getproduct(a, b, l, (l+r)>>1, k*2+1);
     ll vr = getproduct(a, b, (l+r)>>1, r, k*2+2);
-    return vl*vr%mod*mul[k]%mod;
+    return vl*vr%mod*quickpow(mul[k], min(b, r)-max(a, l))%mod;
 }
 
 ll getmm(ll a, ll b, ll l, ll r, ll k)
@@ -143,7 +142,7 @@ ll gettot(ll a, ll b)
 {
     ll m = getmm(a, b, 0, N, 0);
     ll p = getproduct(a, b, 0, N, 0);
-    cout << m << " " << p << endl;
+    //cout << m << " " << p << endl;
     return geteuler(p, m);
 }
 
@@ -172,6 +171,7 @@ int main()
             ll l, r;
             cin >> l >> r;
             cout << gettot(l-1, r) << endl;
+
         }
     }
 }
