@@ -33,7 +33,7 @@ ll quickpow(ll x, ll n)
 
 void getprime()
 {
-    prime.push_back(2);
+    prime.push_back(2ll);
     vector<bool> isp(301, true);
     for(ll i = 3; i <= 300; i += 2) {
         if(isp[i]) {
@@ -43,18 +43,17 @@ void getprime()
             }
         }
     }
-    revprime.resize(prime.size());
-    REP(i, revprime.size()) {
-        revprime[i] = quickpow(prime[i], mod-2);
+    REP(i, prime.size()) {
+        revprime.push_back(quickpow(prime[i], mod-2));
     }
 }
 
 inline ll getmask(ll a)
 {
-    ll m = 0;
+    ll m = 0ll;
     REP(i, prime.size()) {
         if(a%prime[i] == 0) {
-            m |= 1<<i;
+            m |= 1ll<<i;
         }
     }
     return m;
@@ -74,12 +73,12 @@ inline ll geteuler(ll a, ll m)
     return ans;
 }
 
-const ll MAXN = 1<<20;
+const ll MAXN = 1ll<<20;
 ll N, dat[MAXN*2-1], mul[MAXN*2-1], mask[MAXN*2-1], maskm[MAXN*2-1];
 
 void init(ll _n)
 {
-    N = 1;
+    N = 1ll;
     while(N < _n) N *= 2;
     REP(i, N*2-1) {
         dat[i] = 1;
