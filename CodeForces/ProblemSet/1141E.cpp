@@ -15,13 +15,6 @@ void accelerate()
     cout.tie(0);
 }
 
-bool suit(ll H, ll dec, ll maxd, ll m)
-{
-    if(dec*(m-1)+maxd >= H) return true;
-    return false;
-
-}
-
 int main()
 {
     accelerate();
@@ -48,16 +41,7 @@ int main()
         return 0;
     }
     ll dec = -D[n-1];
-    ll l = 0, h = H/dec+1, m;
-    m = (l+h)>>1;
-    while(h-l > 1) {
-        if(suit(H, dec, maxd, m)) {
-            h = m;
-        }else {
-            l = m;
-        }
-        m = (l+h)>>1;
-    }
+    ll l = ceil((H-maxd+0.0)/dec);
     ll ans = l*n;
     H -= l*dec;
     REP(i, n) {
