@@ -17,13 +17,14 @@ void accelerate()
 
 const int MAXN = 150010;
 int ran[MAXN], par[MAXN];
-vector<int> ans[MAXN];
+int R[MAXN];
+int nex[MAXN];
 void init_dsu(int n)
 {
-    REP(i, n) {
+    REP(i, n+1) {
         par[i] = i;
         ran[i] = 1;
-        ans[i].push_back(i);
+        R[i] = i;
     }
 }
 
@@ -37,15 +38,16 @@ void comb_dsu(int x, int y)
 {
     x = find_dsu(x);
     y = find_dsu(y);
+
     if(x == y) return;
     if(ran[x] < ran[y]) {
         par[x] = y;
-        ans[y].insert(ans[y].end(), ans[x].begin(), ans[x].end());
-        ans[x].clear();
+        nex[R[y]] = x;
+        R[y] = R[x];
     }else {
         par[y] = x;
-        ans[x].insert(ans[x].end(), ans[y].begin(), ans[y].end());
-        ans[y].clear();
+        nex[R[x]] = y;
+        R[x] = R[y];
         if(ran[x] == ran[y]) {
             ++ran[x];
         }
@@ -62,12 +64,16 @@ int main()
     accelerate();
     int n;
     cin >> n;
-    init_dsu(n);
+    init_dsu(n+1);
     REP(i, n-1) {
         int x, y;
         cin >> x >> y;
-        --x, --y;
         comb_dsu(x, y);
     }
-    for(auto x: ans[find_dsu(0)]) cout << x+1 << " "; cout << endl;
+    int sta = find_dsu(1);
+    while(sta != 0) {
+        cout << sta << " ";
+        sta = nex[sta];
+    }
+    cout << endl;
 }
