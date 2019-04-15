@@ -52,15 +52,6 @@ bool changeans(string &ans_ori, string &ans_tar, string &ori, string &tar, int s
 {
     string core_ori = ori.substr(sta, las-sta);
     string core_tar = tar.substr(sta, las-sta);
-    /*int pos_ori = ans_ori.find(core_ori);
-    int pos_tar = ans_tar.find(core_tar);
-    while(pos_ori != pos_tar) {
-        if(pos_ori< pos_tar) {
-            pos_ori = ans_ori.find(core_ori, pos_tar);
-        }else {
-            pos_tar = ans_tar.find(core_tar, pos_ori);
-        }
-    }*/
 
     int pos = -1;
     int m = core_ori.size();
@@ -124,35 +115,37 @@ int main()
     cin >> n;
     vector<string> ori(n);
     vector<string> tar(n);
+    vector<pair<int, int>> cores(n);
     REP(i, n) cin >> ori[i];
     REP(i, n) cin >> tar[i];
     string ans_ori, ans_tar;
     REP(i, n) {
-        auto core = findcore(ori[i], tar[i]);
-        if(core.second - core.first == 0) continue;
+        cores[i] = findcore(ori[i], tar[i]);
+        if(cores[i].second - cores[i].first == 0) continue;
         else if(ans_ori == "") {
             ans_ori = ori[i];
             ans_tar = tar[i];
             continue;
         }
-        if(!changeans(ans_ori, ans_tar, ori[i], tar[i], core.first, core.second)) {
+        if(!changeans(ans_ori, ans_tar, ori[i], tar[i], cores[i].first, cores[i].second)) {
             cout << "NO" << endl;
             return 0;
         }
     }
     REP(i, n) {
         int pos_ori = ori[i].find(ans_ori);
-        //int pos_tar = ori[i].find(ans_tar);
-        if(pos_ori == -1) {
-            if(ori[i].compare(tar[i]) != 0) {
+        if(cores[i].second-cores[i].first == 0) {
+            if(pos_ori != -1) {
                 cout << "NO" << endl;
                 return 0;
             }
         }else {
-            for(int j = 0; j < ans_ori.size(); ++j) {
-                ori[i][pos_ori+j] = ans_tar[j];
+            if(pos_ori == -1) {
+                cout << "NO" << endl;
+                return 0;
             }
-            if(ori[i].compare(tar[i]) != 0) {
+            if(pos_ori <= cores[i].first && pos_ori+ans_ori.size() >= cores[i].second) continue;
+            else {
                 cout << "NO" << endl;
                 return 0;
             }
