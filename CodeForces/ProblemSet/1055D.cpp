@@ -120,6 +120,7 @@ int main()
     REP(i, n) cin >> tar[i];
     string ans_ori, ans_tar;
     REP(i, n) {
+        // 事实上，每个非空的core必须是一样的
         cores[i] = findcore(ori[i], tar[i]);
         if(cores[i].second - cores[i].first == 0) continue;
         else if(ans_ori == "") {
