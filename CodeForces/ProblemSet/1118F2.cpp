@@ -157,40 +157,6 @@ bool coloring()
 
             if(color[act[col]] == 0) ++cnt[col];
             color[act[col]] = col;
-
-            ll cur = i;
-            used[cur] = 0;
-            while(cur != act[col]) {
-                if(used[cur]) {
-                    if(color[cur] != col) return false;
-                    break;
-                }
-                if(color[cur] != col) {
-                    if(color[cur] == 0) {
-                        color[cur] = col;
-                        ++cnt[col];
-                    }
-                    else return false;
-                }
-                used[cur] = 1;
-                cur = fa[cur];
-            }
-            cur = j;
-            while(cur != act[col]) {
-                if(used[cur]) {
-                    if(color[cur] != col) return false;
-                    break;
-                }
-                if(color[cur] != col) {
-                    if(color[cur] == 0) {
-                        color[cur] = col;
-                        ++cnt[col];
-                    }
-                    else return false;
-                }
-                used[cur] = 1;
-                cur = fa[cur];
-            }
             used[act[col]] = 1;
         }
     }
