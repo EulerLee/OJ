@@ -15,26 +15,47 @@ void accelerate()
     cout.tie(0);
 }
 
-int R, C;
-int vis[410];
-
-bool compare(int i, int j)
+void solve(int R, int C)
 {
-    return vis[i] < vis[j];
-}
-
-void DFS(int v, int &cnt)
-{
-    if(vis[v]) {
-        return;
+    int n = R*C;
+    vector<int> path(n);
+    REP(i, n) {
+        path[i] = i;
     }
-    vis[v] = cnt;
-    cnt++;
-    int i = v/C, j = v%C;
-    int x = (i+1)%R, y = (j+2)%C;
-    if(!(i == x || j == y || i+j == x+y || i-j == x-y)) {
-        DFS(x*C+y, cnt);
+    REP(k, 1000) {
+        random_shuffle(path.begin(), path.end());
+        int flg = 1;
+        REP(i, n-1) {
+            int x = path[i]/C;
+            int y = path[i]%C;
+            int j = i+1;
+            for(; j < n; ++j) {
+                int x1 = path[j]/C;
+                int y1 = path[j]%C;
+                if(x == x1 || y == y1 || x+y == x1+y1 || x-y == x1-y1) {
+                    continue;
+                }else {
+                    break;
+                }
+            }
+            if(j >= n) {
+                flg = 0;
+                break;
+            }else {
+                swap(path[i+1], path[j]);
+            }
+        }
+        if(flg) {
+            cout << "POSSIBLE" << endl;
+            for(auto x: path) {
+                int i = x/C;
+                int j = x%C;
+                cout << i+1 << " " << j+1 << endl;
+            }
+            return;
+        }
     }
+    cout << "IMPOSSIBLE" << endl;
 }
 
 int main()
@@ -44,57 +65,10 @@ int main()
     cin >> T;
 
     for(int t = 1; t <= T; ++t) {
+        int R, C;
         cin >> R >> C;
-        int sw = 0;
-        if(R > C) {
-            swap(R, C);
-            sw = 1;
-        }
-        memset(vis, 0, sizeof vis);
-        vector<int> order(R*C);
-        REP(i, R*C) {
-            order[i] = i;
-        }
-        bool ans = true;
-        int cnt = 1;
-        int prex, prey;
-        REP(v, C) {
-            int cur = cnt;
-            if(v == 0) {
-                DFS(v, cnt);
-            }else {
-                int i = 0, j = v;
-                if(i == prex || j == prey || i+j == prex+prey || i-j == prex-prey) {
-                    continue;
-                }
-                DFS(v, cnt);
-            }
-            cur = cnt-cur-1;
-            if(cur != -1) {
-                prex = cur%R;
-                prey = (v+cur*2)%C;
-            }
-            cout << v << endl;
-        }
-        REP(v, R*C) {
-            if(vis[v] == 0) {
-                ans = false;
-                break;
-            }
-        }
-        if(!ans) {
-            cout << "Case #" << t << ": IMPOSSIBLE" << endl;
-            continue;
-        }
-        cout << "Case #" << t << ": POSSIBLE" << endl;
-        sort(order.begin(), order.end(), compare);
-        for(auto x: order) {
-            int i = x/C+1;
-            int j = x%C+1;
-            if(sw) {
-                swap(i, j);
-            }
-            cout << i << " " << j << endl;
-        }
+        cout << "Case #" << t << ": ";
+        solve(R, C);
     }
+
 }
