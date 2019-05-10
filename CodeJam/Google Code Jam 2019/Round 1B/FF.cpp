@@ -69,14 +69,15 @@ bool check_enough(vector<int> &C, vector<int> &D, int L, int R, int A, int K)
     int snd = C[A];
     if(L == R) return D[A] <= snd+K;
     if(L == A) {
-        int vl = RMQ_queryC(A+1, R, 0, RMQ_N, 0);
+        int vl = RMQ_queryC(A+1, R+1, 0, RMQ_N, 0);
         if(vl > snd) return false;
-        vl = RMQ_queryD(A, R, 0, RMQ_N, 0);
+        vl = RMQ_queryD(A, R+1, 0, RMQ_N, 0);
         return vl <= snd+K;
     }else {
-        int vl = RMQ_queryC(L, A-1, 0, RMQ_N, 0);
+        int vl = RMQ_queryC(L, A, 0, RMQ_N, 0);
+        //cout << A << ": " << vl << endl;
         if(vl >= snd) return false;
-        vl = RMQ_queryD(L, A, 0, RMQ_N, 0);
+        vl = RMQ_queryD(L, A+1, 0, RMQ_N, 0);
         return vl <= snd+K;
     }
 }
@@ -86,20 +87,21 @@ bool check_over(vector<int> &C, vector<int> &D, int L, int R, int A, int K)
     int snd = C[A];
     if(L == R) return D[A]+K < snd;
     if(L == A) {
-        int vl = RMQ_queryC(A+1, R, 0, RMQ_N, 0);
+        int vl = RMQ_queryC(A+1, R+1, 0, RMQ_N, 0);
         if(vl > snd) return false;
-        vl = RMQ_queryD(A, R, 0, RMQ_N, 0);
+        vl = RMQ_queryD(A, R+1, 0, RMQ_N, 0);
         return vl+K < snd;
     }else {
-        int vl = RMQ_queryC(L, A-1, 0, RMQ_N, 0);
+        int vl = RMQ_queryC(L, A, 0, RMQ_N, 0);
         if(vl >= snd) return false;
-        vl = RMQ_queryD(L, A, 0, RMQ_N, 0);
+        vl = RMQ_queryD(L, A+1, 0, RMQ_N, 0);
         return vl+K < snd;
     }
 }
 
 void solve()
 {
+    //cout << endl;
     int N, K;
     cin >> N >> K;
     init_RMQ(N);
@@ -142,9 +144,9 @@ void solve()
             }
             m = (l+r)>>1;
         }
-        int R1 = i+l;
+        int R1 = R-(i+l);
         if(!check_over(C, D, i, i+l, i, K)) {
-            R1--;
+            R1++;
         }
 
         l = 0, r = i+1;
@@ -169,14 +171,14 @@ void solve()
             }
             m = (l+r)>>1;
         }
-        int L1 = i-l;
+        int L1 = (i-l)-L;
         if(!check_over(C, D, i-l, i, i, K)) {
             L1++;
         }
 
-        ans += (R-R1)*(i-L+1) + (L1-L)*(R-i+1);
-        cout << endl;
-        cout << i << ":\t" << L << " " << L1 << " " << R1 << " " << R << endl;
+        ans += 1ll*R1*(i-L+1) + 1ll*L1*(R-i+1) - 1ll*R1*L1;
+
+        //cout << i << ":\t" << L << " " << L1 << " " << R1 << " " << R << endl;
     }
     cout << ans << endl;
 }
