@@ -113,7 +113,7 @@ int main()
                     dv[cur].first = order[i];
                 }else if(dv[cur].second == -1) {
                     dv[cur].second = order[i];
-                }else {
+                }else {         // 把之前处理过的情况跳过
                     int k = cnt-1;
                     while(k >= 0) {
                         if(ind[k] < S[k]) break;
