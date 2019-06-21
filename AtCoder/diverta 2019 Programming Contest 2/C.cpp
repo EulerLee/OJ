@@ -1,12 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-vector<int> deg;
-
-bool compare(int i, int j)
-{
-    return deg[i] > deg[j];
-}
+typedef long long ll;
 
 int main()
 {
@@ -17,27 +11,48 @@ int main()
     int n;
     cin >> n;
     vector<int> A(n);
+    int cnt = 0;
+    int ans = 0;
     for(int i = 0; i < n; ++i) {
         cin >> A[i];
+        if(A[i] < 0) ++cnt;
+        ans += abs(A[i]);
     }
     sort(A.begin(), A.end());
-    deg.resize(n);
-    vector<int> ind(n);
-    for(int i = 0; i < n; ++i) {
-        ind[i] = i;
-        if(i < n/2) {
-            deg[i] = 2*i+1;
-        }else {
-            deg[i] = 2*(i-n/2);
-        }
+    if(cnt == n) {
+        ans = ans + 2*A[n-1];
+    }else if(cnt == 0) {
+        ans = ans - 2*A[0];
     }
-    sort(ind.begin(), ind.end(), compare);
-    ll pre;
-    for(int i = 0; i < n; ++i) {
-        if(i == 0) {
-            pre = A[i];
-        }else {
-            
+    cout << ans << endl;
+    int l = 0, r = n-1;
+    if(n-cnt <= 1) {
+        int pre = A[n-1];
+        for(int i = n-2; i >= 0; --i) {
+            cout << pre << " " << A[i] << endl;
+            pre -= A[i];
+        }
+    }else {
+        if(n == 2) {
+            cout << A[1] << " " << A[0] << endl;
+            return 0;
+        }
+        cout << A[l] << " " << A[r] << endl;
+        int pre = A[l] - A[r];
+        --r;
+        ++l;
+        while(r > max(cnt, 1)) {
+            cout << pre << " " << A[r] << endl;
+            pre -= A[r];
+            --r;
+        }
+        cout << A[max(cnt, 1)] << " " << pre << endl;
+        pre = A[max(cnt, 1)] - pre;
+        --r;
+        while(l < cnt) {
+            cout << pre << " " << A[l] << endl;
+            pre -= A[l];
+            ++l;
         }
     }
 }
