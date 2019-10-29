@@ -1,3 +1,6 @@
+#pragma comment(linker, "/stack:247474112")
+#pragma GCC optimize("Ofast")
+
 #include <iostream>
 #include <string>
 #include <vector>
