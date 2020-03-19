@@ -1,3 +1,11 @@
+/*
+the whole idea is to find the smallest circle in a graph
+this could be O(n^2) complex
+but using special features of this certain graph can make us search smaller set of vertices
+actually in this problem we only need to search 168 vertices
+168 is the number of primes under 1000
+*/
+
 #pragma comment(linker, "/stack:247474112")
 #pragma GCC optimize("Ofast")
 
