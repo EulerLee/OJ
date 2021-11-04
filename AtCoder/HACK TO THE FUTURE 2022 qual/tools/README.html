@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/default.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css">
+<link rel="stylesheet" href="file:////home/wata/.vscode/extensions/goessner.mdmath-2.7.4/themes/default/style.css">
+
+</head>
+<body class="markdown-body">
+<h1 id="usage">Usage</h1>
+<h2 id="requirements">Requirements</h2>
+<p>Please install a compiler for Rust language (see <a href="https://www.rust-lang.org">https://www.rust-lang.org</a>).</p>
+<h2 id="input-generation">Input Generation</h2>
+<p>Prepare <code>seeds.txt</code> which contains a list of random seeds (unsigned 64bit integers) and execute the following command.</p>
+<pre><code><code><div>cargo run --release --bin gen seeds.txt
+</div></code></code></pre>
+<p>This will output input files into <code>in</code> directory.</p>
+<h2 id="testing">Testing</h2>
+<p>Let <code>in.txt</code> be an input file, <code>out.txt</code> be a file to which output of your program will be written, and <code>cmd</code> be a command to run your program.
+You can test your program by executing the following command.</p>
+<pre><code><code><div>cargo run --release --bin tester cmd &lt; in.txt &gt; out.txt
+</div></code></code></pre>
+<p>The above command outputs the score to standard error.
+You can specify arguments to your program by</p>
+<pre><code><code><div>cargo run --release --bin tester cmd arg1 arg2 ... &lt; in.txt &gt; out.txt
+</div></code></code></pre>
+<h2 id="visualization">Visualization</h2>
+<p>Let <code>in.txt</code> be an input file and <code>out.txt</code> be an output file.
+You can visualize the output by executing the following command.</p>
+<pre><code><code><div>cargo run --release --bin vis in.txt out.txt
+</div></code></code></pre>
+<p>The above command writes a visualization result to <code>out.svg</code>.
+It also outputs the score to standard output.</p>
+<p>The color of each task corresponds to the L2 norm of the required skill levels: blue when the L2 norm is 10, and red when it is 40.
+You can open the svg file using image viewers, web browsers, or via <code>vis.html</code> file.
+You can also use a <a href="https://img.atcoder.jp/future-contest-2022-qual/f4ca7c3336de23e5c8d1338981e38375_en.html">web visualizer</a> which is more rich in features.</p>
+<h1 id="%E4%BD%BF%E3%81%84%E6%96%B9">使い方</h1>
+<h2 id="%E5%AE%9F%E8%A1%8C%E7%92%B0%E5%A2%83">実行環境</h2>
+<p>Rust言語のコンパイル環境が必要です。
+<a href="https://www.rust-lang.org/ja">https://www.rust-lang.org/ja</a> を参考に各自インストールして下さい。</p>
+<h2 id="%E5%85%A5%E5%8A%9B%E7%94%9F%E6%88%90">入力生成</h2>
+<p><code>seeds.txt</code> に欲しい入力ファイルの数だけ乱数seed値(符号なし64bit整数値)を記入し、以下のコマンドを実行します。</p>
+<pre><code><code><div>cargo run --release --bin gen seeds.txt
+</div></code></code></pre>
+<p>生成された入力ファイルは <code>in</code> ディレクトリに出力されます。</p>
+<h2 id="%E3%83%86%E3%82%B9%E3%83%88%E5%AE%9F%E8%A1%8C">テスト実行</h2>
+<p>入力ファイル名を<code>in.txt</code>、出力結果を書き出す先のファイル名を<code>out.txt</code>、あなたのプログラムの実行コマンドを<code>cmd</code>としたとき、以下のコマンドを実行します。</p>
+<pre><code><code><div>cargo run --release --bin tester cmd &lt; in.txt &gt; out.txt
+</div></code></code></pre>
+<p>実行が終わると、スコアが標準エラーに出力されます。
+引数が必要な場合には</p>
+<pre><code><code><div>cargo run --release --bin tester cmd arg1 arg2 ... &lt; in.txt &gt; out.txt
+</div></code></code></pre>
+<p>のようにします。</p>
+<h2 id="%E3%83%93%E3%82%B8%E3%83%A5%E3%82%A2%E3%83%A9%E3%82%A4%E3%82%B6">ビジュアライザ</h2>
+<p>入力ファイル名を<code>in.txt</code>、出力ファイル名を<code>out.txt</code>としたとき、以下のコマンドを実行します。</p>
+<pre><code><code><div>cargo run --release --bin vis in.txt out.txt
+</div></code></code></pre>
+<p>出力のビジュアライズ結果は <code>out.svg</code> というファイルに書き出されます。
+標準出力にはスコアを出力します。</p>
+<p>各タスクの色は要求技能レベルのL2ノルムに対応しています。L2ノルムが10のとき青色、40のとき赤色になります。
+svgファイルは画像ビューアソフト、webブラウザなどで表示できます。
+<code>vis.html</code> ファイルを開くことでも表示できます。
+より機能が豊富な<a href="https://img.atcoder.jp/future-contest-2022-qual/f4ca7c3336de23e5c8d1338981e38375.html">ウェブ版のビジュアライザ</a>も利用可能です。</p>
+
+</body>
+</html>
