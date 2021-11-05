@@ -16,6 +16,7 @@
 #include <tuple>
 #include <queue>
 #include <bitset>
+#include <stack>
 #define PII pair<int, int>
 #define T3I tuple<int, int, int>
 using namespace std;
@@ -29,6 +30,21 @@ typedef vector<vec> mat;
 
 vector<int> G[1000];
 int deg_in[1000], deg_out[1000];
+int height[1000], hardness[1000];
+
+int DFS_height(int v)
+{
+    if(height[v] != -1) return height[v];
+    if(deg_out[v] == 0) return height[v] = 0;
+    else {
+        int &res = height[v];
+        for(auto u: G[v]) {
+            res = max(res, DFS_height(u));
+        }
+        ++res;
+        return res;
+    }
+}
 
 int main()
 {
@@ -40,12 +56,15 @@ int main()
     cin >> N >> M >> K >> R;
     memset(deg_in, 0, N);
     memset(deg_out, 0, N);
+    memset(height, -1, N);
+    memset(hardness, 0, N);
     
     mat D(N, vec(K));
     mat P(M, vec(K));
     for(int i = 0; i < N; ++i) {
         for(int j = 0; j < K; ++j) {
             cin >> D[i][j];
+            hardness[i] = max(hardness[i], D[i][j]);
         }
     }
 
@@ -58,11 +77,18 @@ int main()
         deg_out[u]++;
     }
 
-    queue<int> ready;
+    for(int i = 0; i < N; ++i) {
+        DFS_height(i);
+    }
+
+    priority_queue<pair<pair<int, int>, int>> ready;    // height & hardness
     vector<int> assign(M, -1), assign_day(M, -1);
+    vector<int> wish_day(M, -1);
     int idle = M;
     for(int i = 0; i < N; ++i) {
-        if(deg_in[i] == 0) ready.push(i);
+        if(deg_in[i] == 0) {
+            ready.push({{height[i], hardness[i]}, i});
+        }
     }
     auto cost = [K](const vec &person, const vec &task) {
         int res = 0;
@@ -70,13 +96,18 @@ int main()
         return res;
     };
 
+    queue<int> PreTask[M];
+
     int day = 1;
     while(true) {
+        // handle pretask
+
+
         // assign
         queue<pair<int, int>> Q;
-        while(idle > 0 && !ready.empty()) {
-            int task = ready.front();
-            ready.pop();
+        while(!ready.empty()) {
+            auto e = ready.top(); ready.pop();
+            int task = e.second;
             int candidate = -1, mincost = INF;
             for(int i = 0; i < M; ++i) {
                 if(assign[i] == -1) {
@@ -85,10 +116,20 @@ int main()
                         mincost = cur_cost;
                         candidate = i;
                     }
+                }else {
+                    int cur_cost = cost(P[i], D[task]) + wish_day[i] - day;
+                    if(cur_cost < mincost) {
+                        mincost = cur_cost;
+                        candidate = i;
+                    }
                 }
+            }
+            if(assign[candidate] != -1) {
+
             }
             assign[candidate] = task;
             assign_day[candidate] = day;
+            wish_day[candidate] = day + max(mincost, 1);
             Q.push({candidate, task});
             --idle;
         }
@@ -110,6 +151,7 @@ int main()
             int task = assign[p];
             int gap_day = day - assign_day[p];
             assign[p] = -1;
+            wish_day[p] = -1;
             ++idle;
             for(int j = 0; j < K; ++j) {
                 P[p][j] = max(P[p][j], D[task][j]-gap_day);
@@ -117,7 +159,7 @@ int main()
             for(auto u: G[task]) {
                 --deg_in[u];
                 if(deg_in[u] == 0) {
-                    ready.push(u);
+                    ready.push({{height[u], hardness[u]}, u});
                 }
             }
         }
